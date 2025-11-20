@@ -114,25 +114,34 @@ export default function Portfolio() {
                 <Button 
                   variant="outline" 
                   size="lg"
-                  onClick={() => {
-                    // Try to download the file
-                    const pdfUrl = '/DANIEL_SUTTON_CV.pdf';
-                    const link = document.createElement('a');
-                    link.style.display = 'none';
-                    link.href = pdfUrl;
-                    link.download = 'DANIEL_SUTTON_CV.pdf';
-                    
-                    // Add to DOM, click, then remove
-                    document.body.appendChild(link);
-                    
-                    // Use setTimeout to ensure the link is properly attached
-                    setTimeout(() => {
+                  onClick={async () => {
+                    try {
+                      // Fetch the PDF file
+                      const response = await fetch('/DANIEL_SUTTON_CV.pdf');
+                      if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                      }
+                      const blob = await response.blob();
+                      
+                      // Create a blob URL and trigger download
+                      const url = window.URL.createObjectURL(blob);
+                      const link = document.createElement('a');
+                      link.href = url;
+                      link.download = 'DANIEL_SUTTON_CV.pdf';
+                      link.style.display = 'none';
+                      document.body.appendChild(link);
                       link.click();
-                      // Clean up after a short delay
+                      
+                      // Clean up
                       setTimeout(() => {
                         document.body.removeChild(link);
+                        window.URL.revokeObjectURL(url);
                       }, 100);
-                    }, 0);
+                    } catch (error) {
+                      console.error('Error downloading CV:', error);
+                      // Fallback: try direct link
+                      window.open('/DANIEL_SUTTON_CV.pdf', '_blank');
+                    }
                   }}
                 >
                   Download CV
