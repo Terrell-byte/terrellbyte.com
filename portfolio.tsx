@@ -112,7 +112,7 @@ export default function Portfolio() {
                   Get In Touch
                 </Button>
                 <Button variant="outline" size="lg" asChild>
-                  <a href="/cv.pdf" download="Daniel_Sutton_CV.pdf">
+                  <a href="/DANIEL_SUTTON_CV.pdf" download="DANIEL_SUTTON_CV.pdf">
                     Download CV
                   </a>
                 </Button>
