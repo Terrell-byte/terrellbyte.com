@@ -111,10 +111,27 @@ export default function Portfolio() {
                   <Mail className="mr-2 h-4 w-4" />
                   Get In Touch
                 </Button>
-                <Button variant="outline" size="lg" asChild>
-                  <a href="/DANIEL_SUTTON_CV.pdf" download="DANIEL_SUTTON_CV.pdf">
-                    Download CV
-                  </a>
+                <Button 
+                  variant="outline" 
+                  size="lg" 
+                  onClick={async () => {
+                    try {
+                      const response = await fetch('/DANIEL_SUTTON_CV.pdf');
+                      const blob = await response.blob();
+                      const url = window.URL.createObjectURL(blob);
+                      const a = document.createElement('a');
+                      a.href = url;
+                      a.download = 'DANIEL_SUTTON_CV.pdf';
+                      document.body.appendChild(a);
+                      a.click();
+                      window.URL.revokeObjectURL(url);
+                      document.body.removeChild(a);
+                    } catch (error) {
+                      console.error('Error downloading CV:', error);
+                    }
+                  }}
+                >
+                  Download CV
                 </Button>
               </div>
             </div>
