@@ -113,22 +113,26 @@ export default function Portfolio() {
                 </Button>
                 <Button 
                   variant="outline" 
-                  size="lg" 
-                  onClick={async () => {
-                    try {
-                      const response = await fetch('/DANIEL_SUTTON_CV.pdf');
-                      const blob = await response.blob();
-                      const url = window.URL.createObjectURL(blob);
-                      const a = document.createElement('a');
-                      a.href = url;
-                      a.download = 'DANIEL_SUTTON_CV.pdf';
-                      document.body.appendChild(a);
-                      a.click();
-                      window.URL.revokeObjectURL(url);
-                      document.body.removeChild(a);
-                    } catch (error) {
-                      console.error('Error downloading CV:', error);
-                    }
+                  size="lg"
+                  onClick={() => {
+                    // Try to download the file
+                    const pdfUrl = '/DANIEL_SUTTON_CV.pdf';
+                    const link = document.createElement('a');
+                    link.style.display = 'none';
+                    link.href = pdfUrl;
+                    link.download = 'DANIEL_SUTTON_CV.pdf';
+                    
+                    // Add to DOM, click, then remove
+                    document.body.appendChild(link);
+                    
+                    // Use setTimeout to ensure the link is properly attached
+                    setTimeout(() => {
+                      link.click();
+                      // Clean up after a short delay
+                      setTimeout(() => {
+                        document.body.removeChild(link);
+                      }, 100);
+                    }, 0);
                   }}
                 >
                   Download CV
